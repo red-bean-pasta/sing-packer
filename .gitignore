@@ -1,0 +1,8 @@
+/config_weaver/
+/pass.txt
+
+sing-box*
+*.dll
+*.apk
+*.so
+LICENSE
