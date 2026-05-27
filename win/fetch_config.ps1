@@ -1,12 +1,12 @@
 . "$workDir\env.ps1"
 
-$url = $URL
+$config_url = $CONFIG_URL
 $port = if ($PORT) { $PORT } else { "443" }
 $username = $USERNAME
 $password = $PASSWORD
 $key = $KEY
 
-foreach ($var in "url", "port", "username", "password", "key") {
+foreach ($var in "config_url", "port", "username", "password", "key") {
     if ([string]::IsNullOrWhiteSpace((Get-Variable $var).Value)) {
         throw "Required variable '$var' not set"
     }
@@ -23,14 +23,14 @@ $pair = "$username`:$password"
 $bytes = [Text.Encoding]::ASCII.GetBytes($pair)
 $basicAuth = [Convert]::ToBase64String($bytes)
 
-$uriBuilder = [System.UriBuilder]::new("https://${url}:$port/cfg")
+$uriBuilder = [System.UriBuilder]::new("https://${config_url}:$port/cfg")
 $query = [System.Web.HttpUtility]::ParseQueryString("")
 $query["agent"] = $agent
 $query["version"] = $version
 $query["key"] = $key
 $uriBuilder.Query = $query.ToString()
 
-Write-Host "Downloading config from $url at port $port with agent '$agent' and version '$version'"
+Write-Host "Downloading config from $config_url at port $port with agent '$agent' and version '$version'"
 Invoke-WebRequest `
     -Uri $uriBuilder.Uri `
     -Headers @{ Authorization = "Basic $basicAuth" } `
