@@ -1,35 +1,7 @@
 #!/usr/bin/env bash
 
-GetArch(){
-    local arch; arch="$(uname -m)"
-    case "$arch" in
-		i386|i486|i586|i686)
-			echo "386" ;;
-        x86_64)
-            echo "amd64" ;;
-		aarch64)
-			echo "arm64" ;;
-        *)
-            echo "$arch" ;;
-    esac
-}
 
-GetKernel(){
-    local os; os="$(uname -s)"
-    case "$os" in
-		Linux*)
-			echo "linux" ;;
-		Darwin*)
-			echo "darwin" ;;
-		*)
-			echo "$os" ;;
-	esac
-}
-
-ARCH="$(GetArch)"
 VERSION="1.13.12"
-KERNEL="$(GetKernel)"
-EXE_URL="https://github.com/SagerNet/sing-box/releases/download/v$VERSION/sing-box-$VERSION-$KERNEL-$ARCH.tar.gz"
 
 CONFIG_URL="网址"
 PORT=443
@@ -37,4 +9,12 @@ USERNAME="用户名"
 PASSWORD="用户密码"
 KEY="解密密钥"
 
+DURATION=72    # in hours
 
+
+GetExeUrl(){
+	local version=$1
+	local kernel=$2
+	local arch=$3
+	echo "https://github.com/SagerNet/sing-box/releases/download/v$version/sing-box-$version-$kernel-$arch.tar.gz"
+}
