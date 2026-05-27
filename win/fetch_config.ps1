@@ -2,15 +2,19 @@ $ErrorActionPreference = "Stop"
 $workDir = $PSScriptRoot
 . "$workDir\env.ps1"
 
+
+$version = $VERSION
+$agent = "windows"
+
 $config_url = $CONFIG_URL
 $port = if ($PORT) { $PORT } else { "443" }
 $username = $USERNAME
 $password = $PASSWORD
 $key = $KEY
-$version = $VERSION
-$agent = "windows"
 
-foreach ($var in "config_url", "port", "username", "password", "key", "version") {
+$duration = [int]$DURATION
+
+foreach ($var in "version", "config_url", "port", "username", "password", "key", "duration") {
     if ([string]::IsNullOrWhiteSpace((Get-Variable $var).Value)) {
         throw "Required variable '$var' not set"
     }
@@ -18,6 +22,17 @@ foreach ($var in "config_url", "port", "username", "password", "key", "version")
 
 
 $config = Join-Path $workDir "config.json"
+if (Test-Path $config) {
+    $lastModified = (Get-Item $config).LastWriteTime
+    $ageSeconds = ((Get-Date) - $lastModified).TotalSeconds
+
+    if ($ageSeconds -lt ($duration * 3600)) {
+        Write-Host "Found valid config within validity period"
+        exit 0
+    }
+}
+
+
 $tmpConfig = Join-Path $workDir ("config.$([guid]::NewGuid()).json")
 
 $authPair = "$username`:$password"
@@ -33,6 +48,7 @@ $query = ($params.GetEnumerator() | ForEach-Object {
     "$($_.Key)=$([uri]::EscapeDataString($_.Value))"
 }) -join "&"
 $uri = "https://${config_url}:$port/cfg?$query"
+
 
 try {
     Write-Host "Downloading config from $config_url at port $port with agent $agent and version $version"
