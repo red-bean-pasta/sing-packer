@@ -1,28 +1,23 @@
 $ErrorActionPreference = "Stop"
-
-$workDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-
+$workDir = $PSScriptRoot
 Set-Location $workDir
 
 
 $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
-
 $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
-
 $isAdmin = $principal.IsInRole(
     [Security.Principal.WindowsBuiltInRole]::Administrator
 )
-
 if (-not $isAdmin) {
     Start-Process powershell `
         -Verb RunAs `
+        -WindowStyle Minimized `
         -ArgumentList @(
             "-NoProfile",
             "-ExecutionPolicy", "Bypass",
             "-NoExit",
             "-File", "`"$PSCommandPath`""
         )
-
     exit
 }
 
@@ -55,6 +50,7 @@ catch {
     Write-Host "ERROR:"
     Write-Host $_
 }
+
 
 Write-Host ""
 Read-Host "Press Enter to exit"

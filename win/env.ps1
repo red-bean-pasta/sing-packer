@@ -1,9 +1,13 @@
-$ARCH = "amd64"
+$CONFIG_URL = "ÍøÖ·"
+$PORT = 443
+$USERNAME = "ÓÃ»§Ãû"
+$PASSWORD = "ÓÃ»§ÃÜÂë"
+$KEY = "½âÃÜÃÜÔ¿"
+
+$ARCH = $env:PROCESSOR_ARCHITECTURE.ToLowerInvariant()
 $VERSION = "1.13.12"
 $EXE_URL = "https://github.com/SagerNet/sing-box/releases/download/v$VERSION/sing-box-$VERSION-windows-$ARCH.zip"
 
-$CONFIG_URL = "ç½‘å€"
-$PORT = 443
-$USERNAME = "ç”¨æˆ·å"
-$PASSWORD = "ç”¨æˆ·å¯†ç "
-$KEY = "è§£å¯†å¯†é’¥"
+$CONFIG = "config.json"
+$EXE = "sing-box.exe"
+$PROCESS = "sing-box"
