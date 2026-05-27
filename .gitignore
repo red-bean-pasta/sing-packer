@@ -6,3 +6,5 @@ sing-box*
 *.apk
 *.so
 LICENSE
+
+/releases/
