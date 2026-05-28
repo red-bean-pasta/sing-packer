@@ -74,7 +74,7 @@ EnsureConfig(){
 
 LaunchExe(){
     Log "Launching $executable with sudo privilege..."
-    exec sudo "$executable" run -c "$config"
+    exec sudo "$executable" run -c "$config" -D "$work_dir"
 }
 
 ValidateElseDownloadExe(){
