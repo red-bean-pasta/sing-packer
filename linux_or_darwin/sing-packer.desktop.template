@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=0.1.0
+Name=Sing-Packer
+Comment=Helper scripts that automate Sing-Box startup
+Exec=
+Icon=
+Terminal=false
+Type=Application
+Categories=Utility;
