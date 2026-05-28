@@ -1,0 +1,13 @@
+set appPath to POSIX path of (path to me)
+set appDir to do shell script "dirname " & quoted form of appPath
+set scriptPath to appDir & "/launch.sh"
+
+tell application "Terminal"
+    activate
+    do script "
+        sudo /bin/bash " & quoted form of scriptPath & ";
+        echo;
+        echo 'Done';
+        read -n 1 -s -r -p 'Press any key to close...'
+    "
+end tell
